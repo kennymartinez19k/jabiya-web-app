@@ -1,0 +1,302 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{language === 'English'? languageJson.shopPage.english.yorder :languageJson.shopPage.spanish.yorder}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [formGroup]="orderForm" >
+  <div class="container-shopping-profile">
+    <div class="info-address">
+      <ion-grid class="ion-padding border-bottom info-address-shopping">
+        <ion-row>
+          <ion-col size="12" class="ion-text-left">
+            <h3 class="bold ion-no-margin">{{language === 'English'? languageJson.shopPage.english.deladdress :languageJson.shopPage.spanish.deladdress}}</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-align-items-center">
+          <ion-icon name="pin" color="primary"></ion-icon>
+          <ion-col size="11" class="ion-text-left">
+            <p color="tertiary" class="pdt-description ion-no-margin">{{cartDetails?.order?.delivery_address?.full_address}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <ng-container *ngFor="let cartItems of cartDetails?.order_lines;let i=index" class="info-addres-item">
+      <ng-container *ngIf="cartItems.isRewardLine===false">
+        <ion-item class="items-for-shop">
+          <ion-thumbnail slot="start">
+            <img [src]="cartItems.productImage ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+            + cartItems.productImage) : '../../assets/images/pdt1.png' " />
+          </ion-thumbnail>
+          <ion-button fill="clear" slot="end" (click)="addToCart(cartItems, 'remove')" color="danger" class="del-btn">
+            <ion-icon name="close-circle-outline"></ion-icon>
+          </ion-button>
+          <ion-label>
+            <h6 color="tertiary" class="pdt-description">{{cartItems.productName}}</h6>
+            <h3 color="secondary" class="pdt-price ion-text-right">{{cartItems.currencySymbol}} {{cartItems.productPriceSubtotal  | number:'1.0':'en-US' }}</h3>
+            <div class="pdt-quantity" slot="start">
+              <ion-button (click)="addToCart(cartItems, 'sub')" fill="outline" class="add-btn">
+                <ion-icon slot="end" name="remove-outline"></ion-icon>
+              </ion-button>
+              <ion-text class="m-8" color="secondary">{{cartItems.productQuantity}}</ion-text>
+              <ion-button (click)="addToCart(cartItems, 'add')" fill="outline" class="add-btn">
+                <ion-icon slot="end" name="add-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ng-container>
+    <ion-grid class="ion-padding-horizontal border-bottom ion-padding-bottom">
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.pointsYouGet :languageJson.shopPage.spanish.pointsYouGet}}</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">+ {{this.cartService.getPointFromOrder().plus_points}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.totalCurrentPoints :languageJson.shopPage.spanish.totalCurrentPoints}}</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <h3 color="success" class="ion-text-right ion-no-margin">{{this.cartService.getPointFromOrder().total_loyalty}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.pointsToRedeem :languageJson.shopPage.spanish.pointsToRedeem}}</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <ion-item class="border">
+            <ion-input [(ngModel)]="pointsToRedeem" [ngModelOptions]="{standalone: true}" type="number" (ionInput)="countChange($event)"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.totalPointsAfterOrder :languageJson.shopPage.spanish.totalPointsAfterOrder}}</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">{{totalPoints - pointsToRedeem}}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-padding-horizontal border-bottom ion-padding-bottom">
+      <ion-row>
+        <ion-col size="6" class="ion-text-left">
+          <h2 class="pdt-name">{{language === 'English'? languageJson.shopPage.english.total :languageJson.shopPage.spanish.total}}</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.discount :languageJson.shopPage.spanish.discount}}</p>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.total_discount}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">Discount from Points</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <h3 color="success" class="ion-text-right red-text ion-no-margin">- RD$ {{this.cartService.getDiscountFromLoyaltyPoints()}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.dcost :languageJson.shopPage.spanish.dcost}}</p>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right" *ngIf="language === 'Spanish'"> 
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">{{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? 'Gratis' : 'RD$ 80'}}</h3>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right" *ngIf="language === 'English'"> 
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">{{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? 'Free' : 'RD$ 80'}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.wouttax :languageJson.shopPage.spanish.wouttax}}</p>
+        </ion-col>
+        <ion-col size="4" class="ion-text-right">
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.amount_untaxed | number:'1.0':'en-US'}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6" class="ion-text-left">
+          <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.tax :languageJson.shopPage.spanish.tax}}</p>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.amount_tax | number:'1.0':'en-US'}}</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6" class="ion-text-left">
+          <p color="tertiary" class="bold pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.tprice :languageJson.shopPage.spanish.tprice}}</p>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <h3 color="secondary" class="bold ion-text-right ion-no-margin">{{cartDetails?.order?.currencySymbol}} {{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? (this.cartService.getTotal()._value | number:'1.0':'en-US' ) : (this.cartService.getTotal()._value + 80 | number:'1.0':'en-US') }}</h3>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="div-card">
+      <div class="list-item-shopping">
+        <ion-grid class="ion-padding-horizontal border-bottom ion-padding-bottom">
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <h2 class="pdt-name">Points</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">Points you get with this order</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">+ {{this.cartService.getPointFromOrder().plus_points}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">Total current points</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right ion-no-margin">{{this.cartService.getPointFromOrder().total_loyalty}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">Points to redeem with this order</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">+ 0</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">Total points after placing this order</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">+ 0</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12" class="ion-text-right">
+                <ion-button color="primary" fill="solid"
+                class="w-160 ion-padding-horizonatal ion-margin-horizontal redeem-btn" (click)="redeemPoints()">
+                Redeem
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid class="ion-padding-horizontal border-bottom ion-padding-bottom ">
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <h2 class="pdt-name">{{language === 'English'? languageJson.shopPage.english.total :languageJson.shopPage.spanish.total}}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.discount :languageJson.shopPage.spanish.discount}}</p>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.total_discount}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">Discount from Points</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right red-text ion-no-margin">- RD$ {{this.cartService.getDiscountFromLoyaltyPoints()}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.dcost :languageJson.shopPage.spanish.dcost}}</p>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right" *ngIf="language === 'Spanish'"> 
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">{{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? 'Gratis' : 'RD$ 80'}}</h3>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right" *ngIf="language === 'English'"> 
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">{{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? 'Free' : 'RD$ 80'}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.wouttax :languageJson.shopPage.spanish.wouttax}}</p>
+            </ion-col>
+            <ion-col size="4" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.amount_untaxed | number:'1.0':'en-US'}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.tax :languageJson.shopPage.spanish.tax}}</p>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right">
+              <h3 color="success" class="ion-text-right green-text ion-no-margin">- {{cartDetails?.order?.currencySymbol}} {{cartDetails?.order?.amount_tax | number:'1.0':'en-US'}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <p color="tertiary" class="bold pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.tprice :languageJson.shopPage.spanish.tprice}}</p>
+            </ion-col>
+            <ion-col size="6" class="ion-text-right">
+              <h3 color="secondary" class="bold ion-text-right ion-no-margin">{{cartDetails?.order?.currencySymbol}} {{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? (this.cartService.getTotal()._value | number:'1.0':'en-US' ) : (this.cartService.getTotal()._value + 80 | number:'1.0':'en-US') }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <div class="list-item-shopping">
+        <div class="div-card items-payment">
+          <ion-radio-group [value]="this.orderForm.value.deliveryDate" formControlName="deliveryDate">
+            <ion-list-header>
+            <h2 class="pdt-name">{{language === 'English'? languageJson.shopPage.english.deldate :languageJson.shopPage.spanish.deldate}}</h2>
+            </ion-list-header>
+            <ion-item>
+              <ion-label> <p color="tertiary" class="bold pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.free :languageJson.shopPage.spanish.free}}</p></ion-label>
+              <ion-radio slot="start" color="primary" value="option1"></ion-radio>
+            </ion-item>
+      
+            <ion-item>
+              <ion-label><p color="tertiary" class="bold pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.tommrow :languageJson.shopPage.spanish.tommrow}} - {{this.cartService.getTotal()._value > 5000 ? 'Gratis' : 'RD$ 80'}} <br/>({{language === 'English'? languageJson.shopPage.english.over :languageJson.shopPage.spanish.over}} RD$ 5,000)</p></ion-label>
+              <ion-radio slot="start" color="primary" value="option2"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </div>
+        <ion-grid class="ion-padding-horizontal ion-padding-bottom items-payment">
+          <ion-row>
+            <ion-col size="12" class="ion-text-left">
+              <h2 class="pdt-name">{{language === 'English'? languageJson.shopPage.english.ptype :languageJson.shopPage.spanish.ptype}}</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6" class="ion-text-left">
+              <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English'? languageJson.shopPage.english.cdelivery :languageJson.shopPage.spanish.cdelivery}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>
+      <h3 color="secondary" class="bold ion-no-margin ion-text-left">{{cartDetails?.order?.currencySymbol}} {{this.orderForm.value?.deliveryDate === 'option1' || (this.cartService.getTotal()._value > 5000 && this.orderForm.value?.deliveryDate === 'option2') ? (this.cartService.getTotal()._value | number:'1.0':'en-US') : (this.cartService.getTotal()._value + 80 | number:'1.0':'en-US')}}</h3>
+    </ion-title>
+    <ion-buttons slot="end" *ngIf="cartDetails">
+      <ion-button color="primary" fill="solid" expand="block"
+        class="w-160 ion-padding-horizonatal ion-margin-horizontal" [disabled]="disableCart" (click)="placeOrder()">
+        {{language === 'English'? languageJson.shopPage.english.order :languageJson.shopPage.spanish.order}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+<div class="loader" *ngIf="loading" ></div>

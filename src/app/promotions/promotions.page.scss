@@ -1,0 +1,28 @@
+.pdt-description {
+  font-weight: 600;
+  white-space: pre-wrap;
+}
+
+
+@media (min-width: 600px) {
+  .list-items{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .items{
+    width: 48%;
+    cursor: pointer;
+  }
+  .btn-item{
+    margin: 0px 25px 20px auto;
+    width: 28%;
+    max-width: 250px;
+  }
+  .search-bar{
+    display: flex;
+    justify-content: flex-end;
+    margin: 0px 0px 0px auto;
+    width: 40%;
+  }
+}

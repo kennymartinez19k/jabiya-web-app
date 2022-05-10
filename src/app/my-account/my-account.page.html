@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{language ==='English' ? languageJson.accountPage.english.acc : languageJson.accountPage.spanish.acc}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-text color="secondary" class="cart-price" routerLink="../shopping-cart">
+      RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+    </ion-text> -->
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment scrollable value="pedidos" [(ngModel)]="segment" (ionChange)="segmentChanged($event)"
+      color="secondary">
+      <ion-segment-button value="pedidos">
+        {{language ==='English' ? languageJson.accountPage.english.request : languageJson.accountPage.spanish.request}}
+      </ion-segment-button>
+      <ion-segment-button value="cuenta">
+        {{language ==='English' ? languageJson.accountPage.english.bill : languageJson.accountPage.spanish.bill}}
+      </ion-segment-button>
+      <ion-segment-button value="facturas">
+        {{language ==='English' ? languageJson.accountPage.english.invoice : languageJson.accountPage.spanish.invoice}}
+      </ion-segment-button>
+      <ion-segment-button disabled="true" value="creditos">
+        {{language ==='English' ? languageJson.accountPage.english.credit : languageJson.accountPage.spanish.credit}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="segment">
+    <app-orders *ngSwitchCase="'pedidos'">
+    </app-orders>
+    <app-accounts *ngSwitchCase="'cuenta'" class="accounts-items">
+    </app-accounts>
+    <app-bills *ngSwitchCase="'facturas'">
+    </app-bills>
+    <app-credits *ngSwitchCase="'creditos'">
+    </app-credits>
+  </div>
+</ion-content>

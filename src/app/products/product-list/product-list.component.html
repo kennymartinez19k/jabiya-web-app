@@ -1,0 +1,221 @@
+  <ion-header [translucent]="true" *ngIf="showHead">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>{{productName}}</ion-title>
+    <ion-title *ngIf="products.length===0">{{language ==='English'? languageJson.listPage.english.welcomemsg :languageJson.listPage.spanish.welcomemsg}}</ion-title> -->
+    <!-- <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/shopping-cart">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+      <ion-text color="secondary" class="cart-price" routerLink="/shopping-cart">
+        RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-text>
+     </ion-buttons> -->
+     <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" class="search-bar"></ion-searchbar>
+     <ion-buttons slot="end">
+      <ion-button routerLink="/shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="pdt-header" *ngIf="showTitle" >
+    <h1 class="pdt-header-title">{{productTitle}}</h1>   
+    </div>
+<ion-list class="list-items-prod">
+  <!-- <ion-list-header>
+    <ion-label>
+      <h2 class="wel-msg"><b>Featured Products</b></h2>
+    </ion-label>
+  </ion-list-header> -->
+  <ng-container *ngFor="let product of products;let i=index">
+    <ion-item class="item-prod">
+      <div class="pdt-quantity" slot="start">
+        <ion-button fill="outline" class="add-btn" (click)="decreaseProductCount(product)">
+          <ion-icon slot="end" name="remove-outline"></ion-icon>
+        </ion-button>
+        <ion-text class="m-8" color="secondary">{{product.amount}} </ion-text>
+        <ion-button fill="outline" class="add-btn" (click)="increaseProductCount(product)">
+          <ion-icon slot="end" name="add-outline"></ion-icon>
+        </ion-button>
+      </div>
+      <ion-thumbnail slot="start">
+        <img [src]="product.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+        + product.image) : '../../assets/images/pdt1.png' ">
+      </ion-thumbnail>
+      <ion-label>
+        <h3 class="pdt-name" color="secondary">{{product.name}}</h3>
+        <!-- <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+        <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p> -->
+        <h3 color="secondary" class="pdt-price">{{product.currencySymbol}} {{product.price | number:'1.0':'en-US'}}</h3>
+        <ion-button fill="solid" class="cart-btn" (click)="addToCart(product, i)">
+          {{language ==='English'? languageJson.listPage.english.add :languageJson.listPage.spanish.add}}
+        </ion-button>
+      </ion-label>
+    </ion-item>
+  </ng-container>
+  
+    <div class="login-container ion-padding ion-text-center list-without-category"  *ngIf="products.length ===0">
+     
+      <div class="ion-text-center ion-padding-vertical page-content">
+        <img src="../../../assets/images/noproducts.png" width="100px">
+      </div>
+      <div class="ion-text-center ion-padding">
+        <h2 class="wel-msg">{{language ==='English'? languageJson.listPage.english.nope :languageJson.listPage.spanish.nope}}.</h2>      
+      </div>
+      <!-- <div class="ion-text-center ion-padding">
+        <p class="wel-submsg">Thank you for signing up! Login to check for special offers from us.</p>
+      </div> -->
+      <!-- <div class="ion-text-center ion-padding-vertical">
+        <ion-button class="ion-margin-vertical" size="default" color="primary" expand="block"
+          routerLink="../products">Go back</ion-button>
+      </div> -->
+    </div>
+  
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt1.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 45.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt2.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 100.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt3.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 85.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt1.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 45.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt2.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 100.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+  <!-- <ion-item>
+    <div class="pdt-quantity" slot="start">
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="remove-outline"></ion-icon>
+      </ion-button>
+      <ion-text class="m-8" color="secondary">2</ion-text>
+      <ion-button fill="outline" class="add-btn">
+        <ion-icon slot="end" name="add-outline"></ion-icon>
+      </ion-button>
+    </div>
+    <ion-thumbnail slot="start">
+      <img src="../../assets/images/pdt3.png">
+    </ion-thumbnail>
+    <ion-label>
+      <h3 class="pdt-name" color="secondary">Lorem ipsum dolor sit amet unde omnis</h3>
+      <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+      <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+      <h3 color="secondary" class="pdt-price">$ 85.00</h3>
+      <ion-button fill="solid" class="cart-btn">
+        Add to cart
+      </ion-button>
+    </ion-label>
+  </ion-item> -->
+</ion-list>
+<!-- </ion-content> -->
+<div class="loader" *ngIf="loading" ></div>

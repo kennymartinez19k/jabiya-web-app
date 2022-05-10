@@ -1,0 +1,30 @@
+ion-header::after {
+  background-image: none;
+}
+.register-container {
+  margin-top: -20px;
+  display: block;
+  text-align: center;
+}
+.input-icon {
+  font-size: 20px;
+  margin-top: 30px;
+}
+.phone-code {
+  position: absolute;
+  margin-top: -31px;
+  margin-left: 14px;
+  z-index: 1;
+  font-size: 16px;
+}
+.phone-field {
+  margin-left: 20px;
+}
+@media (min-width: 600px){
+  .container-field{
+    display: flex;
+  }
+  .container-field ion-item{
+    width: 50%;
+  }
+}

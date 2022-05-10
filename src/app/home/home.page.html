@@ -1,0 +1,240 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" auto-hide="false">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" class="search-bar"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-slides pager="true" [options]="slideOpts">
+    <ng-container *ngFor="let banner of banners;let i=index">
+      
+    <ion-slide>
+      <!-- <img [src]="banner.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+      + banner.image) : '../../assets/images/banner1.png' "> -->
+      <cached-img [src]="{imageUrl: banner.image_url, imageHash: banner.image_hash}" [spinner]="false"></cached-img>
+    </ion-slide>
+    
+    </ng-container>
+   
+  </ion-slides>
+  <div class="previous-order-conatiner">
+    <div class="ion-padding-horizontal ion-padding-top ion-text-left">
+      <!-- <h2 class="wel-msg">Orden rápida</h2> -->
+      <h2 class="wel-msg"> {{language === 'English' ? languageJson.homePage.english.titlemsg : languageJson.homePage.spanish.titlemsg}} </h2>     
+      <p class="wel-submsg">{{language === 'English' ? languageJson.homePage.english.subtitle : languageJson.homePage.spanish.subtitle}} </p>
+      <!-- <ion-button [disabled]="disableEasyOrderButton" slot="end" fill="clear" (click)="placeEasyOrder(easyOrderProducts)"   class="view-btn" >{{language === 'English' ? languageJson.homePage.english.quickbutton : languageJson.homePage.spanish.quickbutton}}
+        <ion-icon slot="start" name="add-circle-outline" style="margin-top: -5px;"></ion-icon>
+      </ion-button> -->
+      <!-- <ion-button slot="end" fill="clear" (click)="placeEasyOrder(easyOrderProducts)" class="view-btn" *ngIf = "this.cartService.getTotal()._value != 0">Añadir Todo
+        <ion-icon slot="start" name="add-circle-outline" style="margin-top: -5px;"></ion-icon>
+      </ion-button> -->
+    </div>
+    <div class="slider-container">
+      <div class="container-arrow-slider" (click)="slidePrev()" *ngIf="easyOrderProducts.length > 0">
+        <ion-icon name="chevron-back-outline" class="arrow"></ion-icon>
+      </div>
+      <ion-slides [options]="sliderContainerOpts" #slides class="m-6" (ionSlidesDidLoad)="slidesLoaded($event)" pager="true">
+        <ng-container *ngFor="let easyOrderProduct of easyOrderProducts;let i=index">
+        <ion-slide class="pdt-slider">
+          <ion-card class="pdt-card">
+            <ion-item>
+              <div class="pdt-quantity" slot="start">
+                <ion-button fill="outline" class="add-btn" (click)="decreaseProductCount(easyOrderProduct)">
+                  <ion-icon slot="end" name="remove-outline"></ion-icon>
+                </ion-button>
+                <ion-text class="m-8" color="primary">{{easyOrderProduct?.order_easy_qty}}</ion-text>
+                <ion-button fill="outline" class="add-btn" (click)="increaseProductCount(easyOrderProduct)">
+                  <ion-icon slot="end" name="add-outline"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-thumbnail slot="start">
+                <img [src]="easyOrderProduct.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+                + easyOrderProduct.image) : '../../assets/images/pdt1.png' ">            
+              </ion-thumbnail>
+              <ion-label>
+              <h3 class="pdt-name" color="secondary">{{easyOrderProduct?.name}}</h3>
+                <h3 class="pdt-name" color="secondary">
+                  <!-- [Descripción Empaque] -->
+                </h3>
+                <p color="tertiary" class="pdt-description">
+                  <!-- Detalles se incluyen aquí -->
+                </p>
+                <h3 color="secondary" class="pdt-price">{{easyOrderProduct?.currencySymbol}} {{easyOrderProduct?.price | number:'1.0':'en-US'}}</h3>
+                <ion-button fill="solid" class="cart-btn" color="secondary" (click)="addToCart(easyOrderProduct, i)">
+                  {{language === 'English' ? languageJson.homePage.english.addbutton : languageJson.homePage.spanish.addbutton}}
+                </ion-button>
+              </ion-label>
+            </ion-item>
+          </ion-card>
+        </ion-slide>
+        </ng-container>
+       
+      
+        <!-- <ion-slide class="pdt-slider">
+          <ion-card class="pdt-card">
+            <ion-item>
+              <div class="pdt-quantity" slot="start">
+                <ion-button fill="outline" class="add-btn">
+                  <ion-icon slot="end" name="remove-outline"></ion-icon>
+                </ion-button>
+                <ion-text class="m-8" color="primary">2</ion-text>
+                <ion-button fill="outline" class="add-btn">
+                  <ion-icon slot="end" name="add-outline"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-thumbnail slot="start">
+                <img src="../../assets/images/pdt2.png">
+              </ion-thumbnail>
+              <ion-label>
+                <h3 class="pdt-name" color="secondary">Descripción del Producto</h3>
+                <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+                <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+                <h3 color="secondary" class="pdt-price">$ 100.00</h3>
+                <ion-button fill="solid" class="cart-btn" color="secondary">
+                  Añadir
+                </ion-button>
+              </ion-label>
+            </ion-item>
+          </ion-card>
+        </ion-slide> -->
+        <!-- <ion-slide class="pdt-slider">
+          <ion-card class="pdt-card">
+            <ion-item>
+              <div class="pdt-quantity" slot="start">
+                <ion-button fill="outline" class="add-btn" color="primary">
+                  <ion-icon slot="end" name="remove-outline"></ion-icon>
+                </ion-button>
+                <ion-text class="m-8" color="primary">2</ion-text>
+                <ion-button fill="outline" class="add-btn" color="primary">
+                  <ion-icon slot="end" name="add-outline"></ion-icon>
+                </ion-button>
+              </div>
+              <ion-thumbnail slot="start">
+                <img src="../../assets/images/pdt3.png">
+              </ion-thumbnail>
+              <ion-label>
+                <h3 class="pdt-name" color="secondary">Descripción del Producto</h3>
+                <h3 class="pdt-name" color="secondary">[Descripción Empaque]</h3>
+                <p color="tertiary" class="pdt-description">Detalles se incluyen aquí</p>
+                <h3 color="secondary" class="pdt-price">$ 85.00</h3>
+                <ion-button fill="solid" class="cart-btn" color="secondary">
+                  Añadir
+                </ion-button>
+              </ion-label>
+            </ion-item>
+          </ion-card>
+        </ion-slide> -->
+      </ion-slides>
+      <div class="container-arrow-slider" (click)="slideNext()" *ngIf="easyOrderProducts.length > 0">
+        <ion-icon name="chevron-forward-outline" class="arrow"></ion-icon>
+      </div>
+    
+    </div>
+    
+    <!-- <ion-button class="ion-margin" fill="solid" color="primary" expand="block">VER TODO LO SUGERIDO
+    </ion-button> -->
+  </div>
+  <div class="categories-conatiner">
+    <div class="ion-padding ion-text-left">
+      <h2 class="wel-msg">{{language === 'English' ? languageJson.homePage.english.promo : languageJson.homePage.spanish.promo}}</h2>
+      <!-- <p class="wel-submsg">Lista de las categorías de productos disponibles</p> -->
+    </div>
+    <ion-grid class="p-8">
+      <ion-row class="ion-no-padding main-promo">
+        <ng-container *ngFor="let categorie of categories;let i=index">
+          <ng-container  *ngIf="i<=2">
+        <ion-col size="4" size-lg="3" (click)="gotoPdtCategory(categorie.id, categorie.name)" class="ion-padding">
+            <img [src]="categorie.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+            + categorie.image) : '../../assets/images/1.jpg' "  class="cat-card">
+        </ion-col>
+        </ng-container>
+        </ng-container>
+        <!-- <ion-col size="4"  class="ion-padding">
+            <img src="../../assets/images/promotions.png" class="cat-card">
+        </ion-col>
+        <ion-col size="4"  class="ion-padding">
+            <img src="../../assets/images/promotions.png" class="cat-card">
+        </ion-col> -->
+       </ion-row>
+       </ion-grid>
+    </div>
+  <div class="previous-order-conatiner">
+    <div class="ion-padding-horizontal ion-padding-top ion-text-left">
+      <h2 class="wel-msg">{{language === 'English' ? languageJson.homePage.english.categories : languageJson.homePage.spanish.categories}}</h2>
+      <p class="wel-submsg">{{language === 'English' ? languageJson.homePage.english.catlist : languageJson.homePage.spanish.catlist}}</p>
+    </div>
+    <ion-grid class="p-8">
+      <ion-row class="ion-no-padding">
+        <ng-container *ngFor="let categorie of categories;let i=index">
+          <ng-container  *ngIf="i>2">
+        <ion-col size="6" size-md="4" size-lg="3" size-xl="2" class="ion-padding item-of-category" (click)="gotoPdtCategory(categorie.id, categorie.name)">
+          <!-- <ion-card class="ion-no-padding" (click)="gotoPdtCategory(categorie.id, categorie.name)">
+            <ion-card-content class="ion-no-padding"> -->
+              <img [src]="categorie.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+              + categorie.image) : '../../assets/images/1.jpg' " class="cat-card">
+              <!-- <h2 class="card-caption" color="secondary">{{categorie.name}}</h2> -->
+            <!-- </ion-card-content>
+          </ion-card> -->
+        </ion-col>
+      </ng-container>
+      </ng-container>
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/promotions.png">
+              <h2 class="card-caption" color="secondary">Promotions</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card" (click)="gotoPdtCategory()">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/1.jpg">
+              <h2 class="card-caption" color="secondary">Mc.Donells'</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card" (click)="gotoPdtCategory()">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/2.jpg">
+              <h2 class="card-caption" color="secondary">Jageemeifier</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card" (click)="gotoPdtCategory()">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/3.jpg">
+              <h2 class="card-caption" color="secondary">Sappaire</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card" (click)="gotoPdtCategory()">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/4.jpg">
+              <h2 class="card-caption" color="secondary">Hennessy</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+        <!-- <ion-col size="6" class="p-8">
+          <ion-card class="ion-no-padding cat-card" (click)="gotoPdtCategory()">
+            <ion-card-content class="ion-no-padding">
+              <img src="../../assets/images/5.jpg">
+              <h2 class="card-caption" color="secondary">Ksiazece</h2>
+            </ion-card-content>
+          </ion-card>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+<div class="loader" *ngIf="loading" ></div>

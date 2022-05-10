@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline" ></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-button slot="end" fill="outline" class="lang-btn" (click)="langPopover()" show-backdrop="false">
+      <img src="../../../assets/images/usa.png" width="16px" style="margin-right:6px">
+      <ion-text color="secondary">English</ion-text>
+      <ion-icon slot="end" name="chevron-down-outline"></ion-icon>
+    </ion-button> -->
+    <ion-item slot="end" class="language-btn">
+      <ion-select [ngStyle]="{'background-image': 'url(../../../assets/images/'+selectedLang+'.png)'}" class="lang-select" (ionChange)="langSelection(selectedLang)" (click)="loadLang()" [(ngModel)]="selectedLang" [interfaceOptions]="customPopoverOptions" interface="popover" placeholder="Select One" mode="ios">
+        <ion-select-option *ngFor="let language of languages" value="{{language.lang}}">{{language.lang}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding-horizontal" [formGroup]="signupForm">
+  <div class="register-container ion-padding-horizontal ion-text-left">
+    <h2 class="wel-msg">{{selectedLang === 'English' ? languageJson.regPage.english.account : languageJson.regPage.spanish.account}}</h2>
+    <p class="wel-submsg">{{selectedLang === 'English' ? languageJson.regPage.english.details : languageJson.regPage.spanish.details}}</p>
+    <div class="ion-margin-vertical ion-padding-bottom container-field">
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.name : languageJson.regPage.spanish.name}}</ion-label>
+        <ion-input required formControlName="firstname" placeholder="" type="text"></ion-input>
+        <ion-icon name="person-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.firstname.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.fname : languageJson.regPage.spanish.fname}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.lname : languageJson.regPage.spanish.lname}}</ion-label>
+        <ion-input formControlName="lastname" placeholder="" type="text"></ion-input>
+        <ion-icon name="person-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.lastname.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.lnamereq : languageJson.regPage.spanish.lnamereq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.email : languageJson.regPage.spanish.email}}</ion-label>
+        <ion-input formControlName="email" placeholder="example@gmail.com" type="email"></ion-input>
+        <ion-icon name="mail-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="errorControl.email.hasError('pattern') && errorControl.email.touched">
+        {{selectedLang === 'English' ? languageJson.regPage.english.emailin : languageJson.regPage.spanish.emailin}}.
+      </ion-text>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.email.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.emailreq : languageJson.regPage.spanish.emailreq}}.
+      </ion-text>
+      <ion-item class="phoneno">
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.phone : languageJson.regPage.spanish.phone}}</ion-label>
+        <ion-input formControlName="phone" placeholder="809555555" type="tel" class="phone-field"></ion-input>
+        <ion-icon name="phone-portrait-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-label slot="start" class="phone-code">+1</ion-label>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.phone.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.phonereq : languageJson.regPage.spanish.phonereq}}.
+      </ion-text>
+      <ion-text color="danger" class="error-msg" *ngIf="errorControl.phone.hasError('pattern') && errorControl.phone.touched">
+        {{selectedLang === 'English' ? languageJson.regPage.english.phonein : languageJson.regPage.spanish.phonein}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.storenamee : languageJson.regPage.spanish.storenamee}}</ion-label>
+        <ion-input formControlName="company_name" placeholder="xxxxxxxxxxx" type="text"></ion-input>
+        <ion-icon name="card-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.company_code.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.storenameereq : languageJson.regPage.spanish.storenameereq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.code : languageJson.regPage.spanish.code}}</ion-label>
+        <ion-input placeholder="Ex.xxxxxxx" type="text" formControlName="company_code"></ion-input>
+        <ion-icon name="business-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.company_code.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.codereq : languageJson.regPage.spanish.codereq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.owner : languageJson.regPage.spanish.owner}}</ion-label>
+        <ion-input placeholder="Ex.xxxxxxx" type="text" formControlName="owner_name"></ion-input>
+        <ion-icon name="browsers-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.owner_name.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.ownerreq : languageJson.regPage.spanish.ownerreq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.direction : languageJson.regPage.spanish.direction}}</ion-label>
+        <ion-input *ngIf="selectedLang === 'Spanish'"placeholder="Dirección Línea 1" type="text" formControlName="address_line_1"></ion-input>
+        <ion-input  *ngIf="selectedLang === 'English'"placeholder="Address Line 1" type="text" formControlName="address_line_1"></ion-input>
+        <ion-icon name="location-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-item>
+        <ion-input *ngIf="selectedLang === 'Spanish'" placeholder="Dirección Línea 2" type="text" formControlName="address_line_2"></ion-input>
+        <ion-input  *ngIf="selectedLang === 'English'" placeholder="Address Line 2" type="text" formControlName="address_line_2"></ion-input>
+        <ion-icon name="location-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.address_line_1.value === '' && errorControl.address_line_2.value === ''">
+        {{selectedLang === 'English' ? languageJson.regPage.english.directionreq : languageJson.regPage.spanish.directionreq}}.
+      </ion-text>
+      <!-- <ion-text color="danger" class="error-msg">
+      Dirección is required.
+    </ion-text> -->
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.province : languageJson.regPage.spanish.province}}</ion-label>
+        <ion-select interface="popover" placeholder="{{selectedLang === 'English' ? languageJson.regPage.english.selprovince : languageJson.regPage.spanish.selprovince}}" (ionChange)="stateSelected($event)" formControlName="state">
+          <ion-select-option *ngFor="let state of states" [value]="state.id">{{state.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.state.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.provincereq : languageJson.regPage.spanish.provincereq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.town : languageJson.regPage.spanish.town}}</ion-label>
+        <ion-select interface="popover" placeholder="{{selectedLang === 'English' ? languageJson.regPage.english.selcity : languageJson.regPage.spanish.selcity}}" (ionChange)="citySelected($event)" formControlName="city" [disabled]="errorControl.state.value === ''">
+          <ion-select-option *ngFor="let city of cities" [value]="city.id">{{city.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.city.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.townreq : languageJson.regPage.spanish.townreq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">Sector</ion-label>
+        <ion-select interface="popover" placeholder="{{selectedLang === 'English' ? languageJson.regPage.english.selsector : languageJson.regPage.spanish.selsector}}" formControlName="sector_id" [disabled]="errorControl.city.value === ''">
+          <ion-select-option *ngFor="let sector of sectors" [value]="sector.id">{{sector.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.sector_id.errors?.required">
+        Sector is required.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.seller : languageJson.regPage.spanish.seller}}</ion-label>
+        <ion-input placeholder="Ex.xxxxxxx" type="text" formControlName="salesperson"></ion-input>
+        <ion-icon name="person-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.salesperson.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.sellreq : languageJson.regPage.spanish.sellreq}}.
+      </ion-text>
+      <ion-item>
+        <ion-label position="stacked">{{selectedLang === 'English' ? languageJson.regPage.english.storetype : languageJson.regPage.spanish.storetype}}</ion-label>
+        <ion-select interface="popover" placeholder="{{selectedLang === 'English' ? languageJson.regPage.english.selstore : languageJson.regPage.spanish.selstore}}" formControlName="type_client_id">
+          <ion-select-option *ngFor="let clientType of clientTypes" [value]="clientType.id">{{clientType.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-text color="danger" class="error-msg" *ngIf="isSubmitted && errorControl.type_client_id.errors?.required">
+        {{selectedLang === 'English' ? languageJson.regPage.english.storetypereq : languageJson.regPage.spanish.storetypereq}}.
+      </ion-text>
+    </div>
+    <ion-button class="ion-margin-vertical" size="default" color="primary" expand="block" (click)="submit()" [disabled]="isSubmitted">{{selectedLang === 'English' ? languageJson.regPage.english.signup : languageJson.regPage.spanish.signup}}
+    </ion-button>
+  </div>
+</ion-content>

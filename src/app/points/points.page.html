@@ -1,0 +1,40 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-menu-button></ion-menu-button> -->
+      <ion-button routerLink="../home" color="dark" fill="clear">
+        <ion-icon name="home-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" class="search-bar"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding ion-margin-bottom">
+    <h1 class="pdt-name">{{language === 'English' ? languageJson.pointsPage.english.titlemsg : languageJson.pointsPage.spanish.titlemsg}}</h1>
+    <div class="d-inline">
+    <h6 class="pdt-description" color="secondary">{{language === 'English' ? languageJson.pointsPage.english.subtitle : languageJson.pointsPage.spanish.subtitle}}</h6>
+    <h1 class="pdt-name primary-text mt-10 ion-margin-horizontal">{{pointsCount  | number:'1.0':'en-US'}}</h1>
+    </div>
+    <p class="pdt-description" color="secondary">{{language === 'English' ? languageJson.pointsPage.english.pointsDescription : languageJson.pointsPage.spanish.pointsDescription}}</p>
+    <a class="pdt-description primary-text text-underline" routerLink="../points/history">{{language === 'English' ? languageJson.pointsPage.english.pointsHistorybutton : languageJson.pointsPage.spanish.pointsHistorybutton}}</a>
+  </div>
+  <ion-slides pager="true" [options]="slideOpts"  class="img-point">
+    <ng-container *ngFor="let banner of banners;let i=index">
+      <ion-slide class="slider-img">
+        <img [src]="banner.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+        + banner.image) : '../../assets/images/banner1.png' ">
+      </ion-slide>
+      </ng-container>
+  </ion-slides>
+  <ion-button routerLink="../home" size="default" color="primary" expand="block" class="ion-margin  btn-item">
+    {{language === 'English' ? languageJson.pointsPage.english.bactToHomeButton : languageJson.pointsPage.spanish.bactToHomeButton}}
+  </ion-button>
+</ion-content>
+<div class="loader" *ngIf="loading" ></div>

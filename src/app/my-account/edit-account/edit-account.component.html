@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-button fill="clear" color="primary" size="large" class="f-20" routerLink="../accounts"><ion-icon name="close-outline" slot="end"></ion-icon></ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="editAccountForm">
+  <div class="register-container ion-padding ion-text-left">
+    <h2 class="wel-msg ion-margin">{{language ==='English'? languageJson.editPage.english.profile :languageJson.editPage.spanish.profile}}</h2>
+    <div class="ion-margin-vertical ion-padding-bottom list-items">
+      <ion-item class="item">
+        <ion-label position="stacked">{{language ==='English'? languageJson.editPage.english.fname :languageJson.editPage.spanish.fname}}</ion-label>
+        <ion-input required placeholder="" type="text" formControlName="firstname" ></ion-input>
+        <ion-icon name="person-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <!-- <ion-text color="danger" class="error-msg">
+        Primer Nombre is required.
+      </ion-text> -->
+      <ion-item class="item">
+        <ion-label position="stacked">{{language ==='English'? languageJson.editPage.english.lname :languageJson.editPage.spanish.lname}}</ion-label>
+        <ion-input placeholder="" type="text" formControlName="lastname"></ion-input>
+        <ion-icon name="person-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <!-- <ion-text color="danger" class="error-msg">
+        Apellido is required.
+      </ion-text> -->
+      <ion-item class="item">
+        <ion-label position="stacked">{{language ==='English'? languageJson.editPage.english.email :languageJson.editPage.spanish.email}}</ion-label>
+        <ion-input placeholder="example@gmail.com" formControlName="email" type="email"></ion-input>
+        <ion-icon name="mail-outline" slot="end" class="input-icon"></ion-icon>
+      </ion-item>
+      <!-- <ion-text color="danger" class="error-msg">
+        Correo Electrónico is Invalid.
+      </ion-text> -->
+      <div class="item">
+        <ion-label slot="start" class="phone-code">+1</ion-label>
+        <ion-item class="phoneno">
+          <ion-label position="stacked">{{language ==='English'? languageJson.editPage.english.phone :languageJson.editPage.spanish.phone}}</ion-label>
+          <div>
+            
+          </div>
+          <ion-input placeholder="" type="tel" formControlName="phone" class="phoneno"></ion-input>
+          <ion-icon name="phone-portrait-outline" slot="end" class="input-icon"></ion-icon>
+        </ion-item>
+      </div>
+
+      <!-- <ion-text color="danger" class="error-msg">
+        Teléfono is Invalid.
+      </ion-text> -->
+    </div>
+    <div class="ion-margin-vertical ion-padding-vertical container-btn">
+    <ion-button class="ion-margin-vertical btn" size="default" color="primary" expand="block" (click)="sendEditAccountDetails()">{{language ==='English'? languageJson.editPage.english.update :languageJson.editPage.spanish.update}}
+    </ion-button>
+  </div>
+  </div>
+</form>
+</ion-content>
+<div class="loader" *ngIf="loading"></div>

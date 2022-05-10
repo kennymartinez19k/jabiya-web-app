@@ -1,0 +1,50 @@
+<ion-header collapse="fade" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" class="search-bar"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <h2 class="pdt-name ion-margin">{{language === 'English' ? languageJson.promoPage.english.promo :
+    languageJson.promoPage.spanish.promo}}</h2>
+    <p class="wel-submsg ion-margin">{{language === 'English' ? languageJson.promoPage.english.description :
+      languageJson.promoPage.spanish.description}}</p>
+
+  <ion-list class="list-items">
+    <ng-container *ngFor="let categorie of categories;let i=index">
+      <ng-container *ngIf="i<=2">
+        <ion-item (click)="gotoPdtCategory(categorie.id, categorie.name)" class="items">
+          <ion-thumbnail slot="start">
+            <img [src]="categorie.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+            + categorie.image) : '../../assets/images/1.jpg' ">
+          </ion-thumbnail>
+          <ion-label>
+            <p color="tertiary" class="pdt-description ion-no-margin">{{categorie.name}}
+            </p>
+            <p class="wel-submsg">{{categorie.description}}</p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ng-container>
+  </ion-list>
+  <ion-slides pager="true" [options]="slideOpts">
+    <ng-container *ngFor="let banner of banners;let i=index">
+    <ion-slide>
+      <!-- <img [src]="banner.image ? this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+      + banner.image) : '../../assets/images/banner1.png' "> -->
+      <cached-img [src]="{imageUrl: banner.image_url, imageHash: banner.image_hash}" [spinner]="false"></cached-img>
+    </ion-slide>
+    </ng-container>
+  </ion-slides>
+  <ion-button routerLink="../home" size="default" color="primary" expand="block" class="ion-margin btn-item">
+    {{language === 'English' ? languageJson.promoPage.english.homeButton : languageJson.promoPage.spanish.homeButton}}
+  </ion-button>
+</ion-content>
+<div class="loader" *ngIf="loading" ></div>

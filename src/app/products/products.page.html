@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline" defaultHref="home"></ion-back-button>      
+    </ion-buttons>
+    <!-- <ion-title>{{categoriName}}</ion-title> -->
+    <!-- <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/shopping-cart">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+      <ion-text color="secondary" class="cart-price" routerLink="/shopping-cart">
+        RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-text>
+     </ion-buttons> -->
+     <ion-searchbar showCancelButton="focus" cancelButtonText="Custom Cancel" class="search-bar"></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- <app-product-category [subCategories]="subCategories"></app-product-category>
+ <app-product-list [products]="products"></app-product-list> -->
+
+  <app-product-category [subCategories]="subCategories" *ngIf='subCategories.length ===0 && products.length>0' hidden></app-product-category>
+  <app-product-category [subCategories]="subCategories" *ngIf='subCategories.length ===0 && products.length===0'></app-product-category>
+ <app-product-category [subCategories]="subCategories" *ngIf='subCategories.length >0'></app-product-category>
+ <app-product-list [products]="products" *ngIf='products.length===0' hidden></app-product-list>
+ <app-product-list [products]="products" *ngIf='products.length >0'></app-product-list> 
+
+</ion-content>

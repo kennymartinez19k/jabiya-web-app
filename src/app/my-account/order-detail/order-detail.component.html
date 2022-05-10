@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{language === 'English' ? languageJson.orderDetailPage.english.detail : languageJson.orderDetailPage.spanish.detail}}</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button routerLink="/shopping-cart">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+      <ion-text color="secondary" class="cart-price" routerLink="/shopping-cart">
+        RD$ 40,000
+      </ion-text>
+    </ion-buttons> -->
+    <ion-buttons slot="end">
+      <ion-button routerLink="/shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="!isLoading">
+  <ion-grid class="ion-padding border-bottom">
+    <ion-row class="ion-padding-horizontal">
+      <ion-col size="12" class="ion-text-left">
+        <h2 class="pdt-name" color="primary">{{language === 'English' ? languageJson.orderDetailPage.english.expdel : languageJson.orderDetailPage.spanish.expdel}}</h2>
+      </ion-col>
+      <ion-col size="8" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderDetailPage.english.orderno : languageJson.orderDetailPage.spanish.orderno}} <span class="bold">{{orderNumber}}</span>
+        </p>
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderDetailPage.english.orderon : languageJson.orderDetailPage.spanish.orderon}} <span class="bold">{{deliveryDate}}</span>
+        </p>
+        <h3 color="secondary" class="bold">RD$ {{orderTotal}}</h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-no-padding border-bottom div-card" >
+    <ng-container *ngFor="let product of orderDetails.order_lines;let i=index;">
+    <ion-row class="border-bottom ion-padding" >
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">{{product?.productName}}</p>
+        <!-- <p color="tertiary" class="pdt-description ion-no-margin">{{product?.productQuantity}} Und * 320Z BOTELLA</p> -->
+        <p color="tertiary" class="pdt-description ion-no-margin">{{'                '}}</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-left">
+        <h3 color="secondary" class="ion-no-margin">{{product?.currencySymbol}} {{product?.price}} / {{product?.currencyUnitLabel}}</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <h3 color="secondary" class="ion-no-margin">x{{product.productQuantity}}</h3>
+        <!-- <h3 color="secondary" class="ion-no-margin"><strike>x9</strike></h3> -->
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="secondary" class="bold ion-no-margin">{{product?.currencySymbol}} {{product?.productPriceSubtotal}}</h3>
+        <!-- <h3 color="secondary" class="ion-no-margin"><strike>RD$1,400.00</strike></h3> -->
+      </ion-col>
+    </ion-row>
+  </ng-container>
+    <!-- <ion-row class="border-bottom ion-padding">
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">Motts Manzana 320nz - 1 Unidad (Plastico)</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">1 Und * 320Z BOTELLA</p>
+        <h3 color="secondary" class="green-text ion-no-margin">0.9% Descuento</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-left">
+        <h3 color="secondary" class="ion-no-margin"><span class="green-text">RD$0.00</span>/Unidad</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <h3 color="secondary" class="ion-no-margin">x0</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="secondary" class="bold green-text ion-no-margin">RD$0.00</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom ion-padding">
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">Motts Manzana 320nz - 1 Unidad (Plastico)</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">1 Und * 320Z BOTELLA</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-left">
+        <h3 color="secondary" class="ion-no-margin">RD$1,300.00/Unidad</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <h3 color="secondary" class="ion-no-margin">x0</h3>
+        <h3 color="secondary" class="ion-no-margin"><strike>x9</strike></h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="secondary" class="bold ion-no-margin">RD$1,300.00</h3>
+        <h3 color="secondary" class="ion-no-margin"><strike>RD$1,400.00</strike></h3>
+      </ion-col>
+    </ion-row> -->
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">Subtotal</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold ion-text-right ion-no-margin">RD$ {{orderSubTotal}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderDetailPage.english.tax : languageJson.orderDetailPage.spanish.tax}}</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold ion-text-right ion-no-margin">RD$ {{orderTaxAmount}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <h2 color="tertiary" class="bold pdt-description ion-no-margin">Total</h2>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h2 color="primary" class="bold ion-text-right ion-no-margin">RD$ {{orderTotal}}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <h3 color="tertiary" class="bold green-text pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderDetailPage.english.save : languageJson.orderDetailPage.spanish.save}}</h3>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold green-text ion-text-right ion-no-margin">RD$ {{savings}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="12" class="ion-text-lef">
+        <p color="tertiary" class="pdt-description ion-margin">{{language === 'English' ? languageJson.orderDetailPage.english.buy : languageJson.orderDetailPage.spanish.buy}}</p>
+        <ion-button fill="outline" color="secondary" expand="block" class="ion-margin">
+          {{language === 'English' ? languageJson.orderDetailPage.english.addall : languageJson.orderDetailPage.spanish.addall}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{invoiceDetailRes?.invoice}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="../shopping-cart" color="primary" fill="solid" class="round-btn">
+        <ion-icon name="cart-outline" class="mr-1"></ion-icon>RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-button>
+     </ion-buttons>
+    <!-- <ion-buttons slot="end">
+      <ion-button routerLink="/shopping-cart">
+        <ion-icon slot="icon-only" name="cart-outline"></ion-icon>
+      </ion-button>
+      <ion-text color="secondary" class="cart-price" routerLink="/shopping-cart">
+        RD$ {{this.cartService.getTotal()._value | number:'1.0':'en-US'}}
+      </ion-text>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="ion-padding border-bottom div-card">
+    <ion-row>
+      <ion-col size="12" class="ion-text-left">
+        <h2 class="pdt-name" color="primary">{{language ==='English'? languageJson.billDetails.english.paid : languageJson.billDetails.spanish.paid}}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language ==='English'? languageJson.billDetails.english.paydate : languageJson.billDetails.spanish.paydate}} <span class="bold text-capitalize">{{invoiceDetailRes?.payment_date}}</span></p>
+      </ion-col>
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language ==='English'? languageJson.billDetails.english.geninvoice : languageJson.billDetails.spanish.geninvoice}} <span class="bold text-capitalize">{{invoiceDetailRes?.invoice_date}} </span></p>
+      </ion-col>
+      <ion-col size="12" class="ion-text-left">
+        <h3 color="secondary" class="bold ion-no-margin">RD${{invoiceDetailRes?.amount_total}}</h3>
+      </ion-col>
+      <ion-col size="12" class="ion-text-left">
+        <ion-button class="round-btn" fill="outline" color="secondary" shape="round" size="small">
+          <ion-icon name="download-outline"></ion-icon> {{language ==='English'? languageJson.billDetails.english.export : languageJson.billDetails.spanish.export}}
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-padding border-bottom">
+      <ion-col size="6" class="ion-text-left">
+        <h3 color="primary" class="bold ion-no-margin">{{language ==='English'? languageJson.billDetails.english.Product : languageJson.billDetails.spanish.Product}}</h3>
+      </ion-col>
+      <ion-col size="3" class="ion-text-left">
+        <h3 color="primary" class="bold ion-no-margin">{{language ==='English'? languageJson.billDetails.english.qty : languageJson.billDetails.spanish.qty}}.</h3>
+      </ion-col>
+      <ion-col size="3" class="ion-text-right">
+        <h3 color="primary" class="bold ion-no-margin">Total</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white" *ngFor = "let invoice of invoiceLines">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">{{invoice?.name}}</p>
+        <!-- <p color="tertiary" class="pdt-description ion-no-margin">24 102Z</p> -->
+        <p color="tertiary" class="pdt-description ion-no-margin">RD${{invoice?.price_unit}}</p>
+      </ion-col>
+      <ion-col size="2" class="ion-text-left">
+        <p color="tertiary" class="pdt-description col-bottom ion-no-margin">{{invoice?.quantity}}</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="dark" class="col-bottom ion-no-margin">RD${{invoice?.price_total}}</h3>
+      </ion-col>
+    </ion-row>
+    <!-- <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">Lorem ipsum dolor [Descripción Empaque]</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">24 102Z</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">RD$200.00</p>
+      </ion-col>
+      <ion-col size="2" class="ion-text-left">
+        <p color="tertiary" class="pdt-description col-bottom ion-no-margin">3</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="dark" class="col-bottom ion-no-margin">RD$600.00</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">Lorem ipsum dolor [Descripción Empaque]</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">24 102Z</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">RD$200.00</p>
+      </ion-col>
+      <ion-col size="2" class="ion-text-left">
+        <p color="tertiary" class="pdt-description col-bottom ion-no-margin">3</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="dark" class="col-bottom ion-no-margin">RD$600.00</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">Lorem ipsum dolor [Descripción Empaque]</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">24 102Z</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">RD$200.00</p>
+      </ion-col>
+      <ion-col size="2" class="ion-text-left">
+        <p color="tertiary" class="pdt-description col-bottom ion-no-margin">3</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="dark" class="col-bottom ion-no-margin">RD$600.00</h3>
+      </ion-col>
+    </ion-row> -->
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">Subtotal</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold ion-text-right ion-no-margin">RD${{invoiceDetailRes?.amount_untaxed}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">{{language ==='English'? languageJson.billDetails.english.tax : languageJson.billDetails.spanish.tax}}</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold ion-text-right ion-no-margin">RD${{invoiceDetailRes?.amount_tax}}</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding border-bottom bg-white">
+      <ion-col size="6" class="ion-text-left">
+        <p color="tertiary" class="bold pdt-description ion-no-margin">Total</p>
+      </ion-col>
+      <ion-col size="6" class="ion-text-right">
+        <h3 color="primary" class="bold ion-text-right ion-no-margin">RD${{invoiceDetailRes?.amount_total}}</h3>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,112 @@
+<ion-grid class="border-bottom">
+  <ion-row>
+    <ion-col size="12" class="ion-text-left ion-padding-horizontal">
+      <h2 class="pdt-name" color="primary">{{language === 'English' ? languageJson.orderPage.english.delivery : languageJson.orderPage.spanish.delivery}}</h2>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-no-padding">
+    <ion-col size="12" class="ion-text-left ion-no-padding">
+      <app-calendar (passDate)="getValueForDate($event)" [datePeriods]="weekDays"></app-calendar>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<div *ngIf="orders.length === 0 && futureOrders.length === 0">
+  <h1 color="primary" class="fs-42 ion-text-center bold"><ion-icon color="primary" name="alert-circle-outline"></ion-icon></h1>
+  <h2 class="pdt-name" color="primary" class="ion-text-center bold">{{language === 'English' ? languageJson.orderPage.english.noorder : languageJson.orderPage.spanish.noorder}}.</h2>
+</div>
+<div *ngIf="orders.length > 0">
+  <ion-row class="ion-padding-horizontal">
+    <ion-col size="12" class="ion-text-left">
+      <h2 class="pdt-name" color="primary">{{language === 'English' ? languageJson.orderPage.english.todaydel : languageJson.orderPage.spanish.todaydel}}</h2>
+    </ion-col>
+  </ion-row>
+  <ion-grid class="ion-padding border-bottom div-card">
+    <ion-row class="border-bottom ion-padding" *ngFor="let order of orders">
+      <ion-col size="8" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderPage.english.orderno : languageJson.orderPage.spanish.orderno}} <span class="bold">{{order.name}}</span>
+        </p>
+        <p color="tertiary" class="pdt-description ion-no-margin">{{language === 'English' ? languageJson.orderPage.english.orderon : languageJson.orderPage.spanish.orderon}} <span class="bold">
+            {{order.create_date}}</span>
+        </p>
+        <h3 color="secondary" class="bold">{{order.currencySymbol}}{{order.amount_total}}</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-left">
+        <ion-button class="ion-no-margin" fill="clear" color="secondary" (click)="gotoOrderDetail(order)">{{language === 'English' ? languageJson.orderPage.english.seedetail : languageJson.orderPage.spanish.seedetail}}
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <!-- <ion-col size="12" class="ion-text-left">
+        <ion-text color="danger" class="bold ion-no-margin">Que ha cambiado?</ion-text>
+      </ion-col>
+      <ion-col size="12" class="ion-text-left">
+        <p color="tertiary" class="pdt-description ion-no-margin">Motts Manzana 320nz - 1 Unidad (Plastico)</p>
+        <p color="tertiary" class="pdt-description ion-no-margin">1 Und * 320Z BOTELLA</p>
+      </ion-col>
+      <ion-col size="4" class="ion-text-left">
+        <h3 color="secondary" class="ion-no-margin">RD$0.00/Unidad</h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-center">
+        <h3 color="secondary" class="ion-no-margin">x0</h3>
+        <h3 color="secondary" class="ion-no-margin"><strike>x9</strike></h3>
+      </ion-col>
+      <ion-col size="4" class="ion-text-right">
+        <h3 color="secondary" class="ion-no-margin">RD$0.00</h3>
+        <h3 color="secondary" class="ion-no-margin"><strike>RD$1,400.00</strike></h3>
+      </ion-col> -->
+    </ion-row>
+  </ion-grid>
+</div>
+<ion-list *ngIf="futureOrders.length > 0" class="container-orders">
+  <ion-list-header class="title-orders">
+    <ion-label>
+      <h2 class="pdt-name" color="primary">{{language === 'English' ? languageJson.orderPage.english.all : languageJson.orderPage.spanish.all}}</h2>
+      <p class="wel-submsg">{{language === 'English' ? languageJson.orderPage.english.recent : languageJson.orderPage.spanish.recent}}</p>
+    </ion-label>
+  </ion-list-header>
+  <ion-item *ngFor="let order of futureOrders" class="orders">
+    <div class="date-icon" ion-avatar>
+      <ion-icon name="calendar-outline"></ion-icon>
+    </div>
+    <ion-label>
+      <h2 color="tertiary" class="bold ion-no-margin">{{order.deliveryDate}}</h2>
+      <h3 color="tertiary" class="ion-no-margin">{{language === 'English' ? languageJson.orderPage.english.invoice : languageJson.orderPage.spanish.invoice}} <span class="bold">{{order.name}}</span></h3>
+      <h3 color="tertiary" class="ion-no-margin">{{language === 'English' ? languageJson.orderPage.english.orderdate : languageJson.orderPage.spanish.orderdate}} <span class="bold">{{order.create_date}}</span> </h3>
+      <h3 color="dark" class="ion-no-margin">Total <span class="bold">
+          {{order.currencySymbol}}{{order.amount_total}}</span></h3>
+      <ion-text color="warning" class="bold ion-no-margin">{{language === 'English' ? languageJson.orderPage.english.exdelivery : languageJson.orderPage.spanish.exdelivery}}</ion-text>
+    </ion-label>
+    <ion-button class="ion-no-margin" fill="clear" color="secondary" (click)="gotoOrderDetail(order)">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <!-- <ion-item>
+    <div class="date-icon" ion-avatar>
+      <ion-icon name="calendar-outline"></ion-icon>
+    </div>
+    <ion-label>
+      <h2 color="tertiary" class="bold ion-no-margin">Jueves, 1 de septiembre, 2021</h2>
+      <h3 color="tertiary" class="ion-no-margin">De factura <span class="bold">BE022121211</span></h3>
+      <h3 color="tertiary" class="ion-no-margin">Ordernado el <span class="bold">31 agosto, 2021</span> </h3>
+      <h3 color="dark" class="ion-no-margin">Total <span class="bold">RD$2,300.00</span></h3>
+      <ion-text color="success" class="bold ion-no-margin">Entregado</ion-text>
+    </ion-label>
+    <ion-button class="ion-no-margin" fill="clear" color="secondary" (click)="gotoOrderDetail()">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item>
+    <div class="date-icon" ion-avatar>
+      <ion-icon name="calendar-outline"></ion-icon>
+    </div>
+    <ion-label>
+      <h2 color="tertiary" class="bold ion-no-margin">Jueves, 1 de septiembre, 2021</h2>
+      <h3 color="tertiary" class="ion-no-margin">De factura <span class="bold">BE022121211</span></h3>
+      <h3 color="tertiary" class="ion-no-margin">Ordernado el <span class="bold">31 agosto, 2021</span> </h3>
+      <h3 color="dark" class="ion-no-margin">Total <span class="bold">RD$2,300.00</span></h3>
+      <ion-text color="danger" class="bold ion-no-margin">Cancelado</ion-text>
+    </ion-label>
+    <ion-button class="ion-no-margin" fill="clear" color="secondary" (click)="gotoOrderDetail()">
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </ion-button>
+  </ion-item> -->
+</ion-list>
