@@ -33,6 +33,26 @@ ion-content {
   border-left: 10px solid transparent;
   border-right: 0px solid transparent;
 }
+
+@media screen and (max-width: 520px){
+  // .segment ion-segment-button{
+  //   font-size: 12px;
+  // }
+  .segment{
+    justify-content: space-between;
+    padding: 0px 10px;
+  }
+  ion-segment-button {
+    --padding-start: 0px;
+    --padding-end: 0px;
+    --max-width: 50px ;
+    font-size: 12px;
+    display: block;
+    min-width: 60px;
+    flex: none
+  }
+
+}
 @media (min-width: 900px) {
   .accounts-items{
     display: flex;

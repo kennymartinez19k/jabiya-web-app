@@ -19,7 +19,7 @@
     </ion-text> -->
   </ion-toolbar>
   <ion-toolbar>
-    <ion-segment scrollable value="pedidos" [(ngModel)]="segment" (ionChange)="segmentChanged($event)"
+    <ion-segment value="pedidos" class="segment" [(ngModel)]="segment" (ionChange)="segmentChanged($event)"
       color="secondary">
       <ion-segment-button value="pedidos">
         {{language ==='English' ? languageJson.accountPage.english.request : languageJson.accountPage.spanish.request}}
