@@ -298,6 +298,12 @@ ion-searchbar ion-icon {
   border: 1px solid #39b03e;
   border-radius: 20px;
 }
+.swiper-container-horizontal>.swiper-pagination-bullets {
+  bottom: -4px !important;
+  left: 0;
+  width: 100%;
+}
+
 @media (min-height: 720px) and (max-height: 880px) {
   .page-content {
     margin-top: 16%;
