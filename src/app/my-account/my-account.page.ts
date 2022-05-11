@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cartServices/cart.service';
 import { LANGUAGE } from '../util/constants';
 @Component({
-  selector: 'app-my-account',
+  selector: 'app-my-accounte',
   templateUrl: './my-account.page.html',
   styleUrls: ['./my-account.page.scss'],
 })

@@ -8,6 +8,7 @@ ion-toolbar {
 ion-content {
   --background: #fbfbfb;
 }
+
 .cart-price {
   width: auto;
   border: 1px solid #84ca08;
@@ -34,10 +35,12 @@ ion-content {
   border-right: 0px solid transparent;
 }
 
+app-my-accounte{
+  background-color: aqua !important;
+}
+
 @media screen and (max-width: 520px){
-  // .segment ion-segment-button{
-  //   font-size: 12px;
-  // }
+  
   .segment{
     justify-content: space-between;
     padding: 0px 10px;
