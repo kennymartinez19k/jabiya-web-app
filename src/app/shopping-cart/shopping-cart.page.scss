@@ -117,7 +117,9 @@ ion-radio {
 .items-for-shop{
   margin: 5px;
 }
-
+.point-input{
+  --padding-top: 5px;
+}
 @media (min-width: 900px) {
   .container-shopping-profile{
     display: flex;

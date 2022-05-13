@@ -147,5 +147,12 @@ ion-thumbnail img {
   }
 
 }
-
+@media (max-width: 400px){
+  .pdt-header{
+    padding: 10px;
+  }
+  .pdt-header-title {
+    font-size: 16px;
+  }
+}
 
